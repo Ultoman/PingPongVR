@@ -7,7 +7,6 @@ public class Paddle : MonoBehaviour {
 	private Vector3 _previousPosition;
 	private Vector3 _velocity;
 
-	private bool _ballHit = false;
 	// Use this for initialization
 	void Start () {
 		_previousPosition = transform.position;
@@ -15,30 +14,36 @@ public class Paddle : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-
+	
 		_velocity = (transform.position - _previousPosition)/ Time.deltaTime;
 		_previousPosition = transform.position;
 		
-		if (_velocity.magnitude > 0.001)
-		{
-			Debug.Log(_velocity.magnitude);
-		}
 	}
 
 	void OnTriggerEnter(Collider other)
 	{
-		Debug.Log("Triggered");
 		if (other.gameObject.tag == "Ball")
 		{
 			if (other.gameObject.GetComponent<Ball>().getLastHitObject() != this.gameObject)
 			{
 				Rigidbody ballRB = other.gameObject.GetComponent<Rigidbody>();
-				Debug.Log(ballRB.velocity.sqrMagnitude);
+				// get speed of the ball
 				float ballMagnitude = ballRB.velocity.magnitude;
-				ballRB.velocity = transform.forward * (ballRB.velocity.magnitude) + _velocity;
-			
-				_ballHit = true;
+				//
+				float dp = Vector3.Dot(transform.forward, ballRB.velocity);
+				if (dp < 0)
+				{
+					ballRB.velocity = transform.forward * (ballRB.velocity.magnitude) + _velocity;
+				}
+				else if (dp >= 0)
+				{
+					ballRB.velocity = -(transform.forward * (ballRB.velocity.magnitude) + _velocity);
+				}
+
+				Vector3 curve = - new Vector3(0, _velocity.y, _velocity.z);
+				Debug.Log(curve);
+				other.gameObject.GetComponent<Ball>()._curveForce = curve;
+
 			}
 			
 		}

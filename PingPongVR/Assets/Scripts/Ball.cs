@@ -5,8 +5,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour {
 
     public float _maxSpeed = 10f;
-
-    public Vector2 _curve;
+	public Vector3 _curveForce = Vector3.zero;
 
 	private GameObject _lastObjectHit;
     private Rigidbody rb;
@@ -25,6 +24,14 @@ public class Ball : MonoBehaviour {
         }
 	}
 
+	void FixedUpdate()
+	{
+		if (_curveForce != Vector3.zero)
+		{
+			rb.AddForce(_curveForce);
+		}
+	}
+
 	void OnTriggerEnter(Collider other)
 	{
 		setLastHitObject(other.gameObject);
@@ -33,6 +40,10 @@ public class Ball : MonoBehaviour {
 	void OnCollisionEnter(Collision collision)
 	{
 		setLastHitObject(collision.collider.gameObject);
+		if (collision.collider.gameObject.tag == "Wall"){
+			_curveForce = Vector3.zero;
+		}
+
 	}
 
 	private void setLastHitObject(GameObject go)
