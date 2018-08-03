@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ec1721c0106d041972e53e5f01d443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xForce: -200
+  xForce: 150
   yForce: 0
   zForce: 0
 --- !u!114 &114576679608243550
@@ -238,6 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxSpeed: 10
+  _curveForce: {x: 0, y: 0, z: 0}
 --- !u!135 &135143786257497508
 SphereCollider:
   m_ObjectHideFlags: 1

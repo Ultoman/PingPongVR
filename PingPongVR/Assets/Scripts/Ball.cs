@@ -41,7 +41,7 @@ public class Ball : MonoBehaviour {
 	{
 		setLastHitObject(collision.collider.gameObject);
 		if (collision.collider.gameObject.tag == "Wall"){
-			_curveForce = Vector3.zero;
+            _curveForce *= .5f;//= Vector3.zero;
 		}
 
 	}
