@@ -47,7 +47,7 @@ public class Paddle : MonoBehaviour {
 
                 Vector3 curve = (-new Vector3(0, _velocity.y, _velocity.z))*2.8f;
 				Debug.Log(curve);
-				other.gameObject.GetComponent<Ball>()._curveForce = curve;
+				other.gameObject.GetComponent<Ball>().setCurveForce(curve);
 
 			}
 			

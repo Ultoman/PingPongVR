@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class RigidPaddle : MonoBehaviour {
 
+    public float curveDiff = 5;
+
     private Vector3 _previousPosition;
+	private Vector3 _velocity;
+    private Vector3 _curveVector;
     private Rigidbody paddleRB;
 
     // Use this for initialization
@@ -17,33 +21,36 @@ public class RigidPaddle : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-
+        _velocity = (transform.position - _previousPosition)/ Time.deltaTime;
+        _previousPosition = transform.position;
     }
 
     void OnCollisionEnter(Collision collision)
     {
+            Rigidbody ballRB = collision.gameObject.GetComponent<Rigidbody>();
+            float dot = Vector3.Dot(ballRB.velocity, _velocity);
+            if (Mathf.Abs(dot) < 3)
+            {
+                Vector3 curve = _velocity * -1;
+			    Debug.Log(curve);
+			    collision.collider.gameObject.GetComponent<Ball>().setCurveForce(curve);
+            }
             
-        Rigidbody ballRB = collision.gameObject.GetComponent<Rigidbody>();
-        /*
-        float dp = Vector3.Dot(transform.forward, ballRB.velocity);
-        //frontside
-        if (dp < 0)
-        {
-            ballRB.velocity = transform.forward * (ballMagnitude) + (_velocity * .4f);
-        }
-        //backside
-        else if (dp >= 0)
-        {
-            ballRB.velocity = -(transform.forward * (ballMagnitude) + (_velocity * .4f));
-        }
-        */
-        //Boost scalar
-        ballRB.velocity = new Vector3(ballRB.velocity.x * 2.35f, ballRB.velocity.y * .22f, ballRB.velocity.z * .22f);
-        //ballRB.velocity = new Vector3(transform.forward * ballMagnitude * 2.35f, ballRB.velocity.y * .22f, ballRB.velocity.z * .22f);
-
-        //Vector3 curve = (-new Vector3(0, _velocity.y, _velocity.z)) * 2.8f;
-        //collision.gameObject.GetComponent<Ball>()._curveForce = curve;
-
+            /*
+            float dp = Vector3.Dot(transform.forward, ballRB.velocity);
+            //frontside
+            if (dp < 0)
+            {
+                ballRB.velocity = transform.forward * (ballMagnitude) + (_velocity * .4f);
+            }
+            //backside
+            else if (dp >= 0)
+            {
+                ballRB.velocity = -(transform.forward * (ballMagnitude) + (_velocity * .4f));
+            }
+            */
+            //Boost scalar
+            //ballRB.velocity = new Vector3(ballRB.velocity.x * 2.35f, ballRB.velocity.y * .22f, ballRB.velocity.z * .22f)
 
     }
 }
