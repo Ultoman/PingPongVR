@@ -14,10 +14,7 @@ public class TunnelForce : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Vector3.Dot(ball.GetComponent<Rigidbody>().velocity, _forceDirection) < 0)
-		{
-			_forceDirection *= -1;
-		}
+
 	}
 
 	void FixedUpdate()
@@ -29,8 +26,17 @@ public class TunnelForce : MonoBehaviour {
 	{
 		if (other.gameObject.tag == "Ball")
 		{
-			Rigidbody rb = other.GetComponent<Rigidbody>();
-			rb.AddForce(_forceDirection * speed);
+            if (Vector3.Dot(other.gameObject.GetComponent<Rigidbody>().velocity, _forceDirection) < 0)
+            {
+                Rigidbody rb = other.GetComponent<Rigidbody>();
+                rb.AddForce(-1 * _forceDirection * speed);
+            }
+            else
+            {
+                Rigidbody rb = other.GetComponent<Rigidbody>();
+			    rb.AddForce(_forceDirection * speed);
+            }
+			
 		}
 		
 	}
