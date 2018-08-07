@@ -31,7 +31,7 @@ public class RigidPaddle : MonoBehaviour {
             float dot = Vector3.Dot(ballRB.velocity, _velocity);
             if (Mathf.Abs(dot) < 3)
             {
-                Vector3 curve = _velocity * -1;
+                Vector3 curve = -1 * ((Vector3.Dot(transform.right, _velocity) * transform.right) + (Vector3.Dot(transform.up, _velocity) * transform.up));
 			    Debug.Log(curve);
 			    collision.collider.gameObject.GetComponent<Ball>().setCurveForce(curve);
             }
